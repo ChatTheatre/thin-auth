@@ -671,7 +671,7 @@ function getNewProperty(&$auth_sock, $uname, $pass, &$complaint, $prop) {
 
    $result = fgets($auth_sock, 16384);
    if (substr($result, 2, 2) == "OK") {
-      return urldecode(chop(substr($result, 5)));
+      return chop(substr($result, 5));
    }
    $complaint = "UserDB error: " . urldecode(chop(substr($result, 6)));
    return FALSE;
@@ -754,7 +754,7 @@ function getProperty(&$ctl_sock, $uname, &$complaint, $prop) {
          urlencode($prop)               . "\n");
    $result = fgets($ctl_sock, 16384);
    if (substr($result, 2, 2) == "OK") {
-      return urldecode(chop(substr($result, 5)));
+      return chop(substr($result, 5));
    }
    $complaint = "UserDB error: " . urldecode(substr($result, 6));
    return FALSE;
