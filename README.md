@@ -10,7 +10,10 @@ To install the thin auth server requires the following steps, which are demonstr
 
 ### 1. Retrieve the Thin Auth Server from GitHub
 
-[TODO]
+Clone the repo onto your game server:
+```
+# git clone https://github.com/skotostech/thin-auth /var/www/html/user
+```
 
 Note that we currently require installation in `/var/www/html/user`. This could be changed, with `server-admin.php`, `server-control.php`, and `admin/restartuserdb.sh` requiring updates. (Making this more generic is on the [TODO list](TODO.md).
 
