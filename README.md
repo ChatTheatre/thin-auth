@@ -173,7 +173,6 @@ Query OK, 0 rows affected (0.00 sec)
 ```
 ### 7. Double-Check Your Config Files
 
-
 Before your start, double-check your config files and make sure they're all set up appropriately. You can also consult the `assets` directory to adjust the TOS, the background image, the graphic logo, and the CSS.
 
 ### 8. Firewall Your System
@@ -190,6 +189,7 @@ Set the Auth and Ctl UserDB servers to automatically run (and rerun) by installi
 ```
 This will check the servers every minute, and restart any that isn't running.
 
+(Note that this means that if you ever want to make a change to your server services ... or if you ever download a new copy from GitHub, all you have to do is kill the `server-auth.php` and `server-control.php` processes, and they'll restart with the new code within a minute.)
 
 ### 10. Tell Your Game to Connect to the New Server
 
