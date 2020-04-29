@@ -4,3 +4,4 @@ Following my initial work, I am leaving this server to the community. The follow
 
 * Slow down polling of servers
 * Make location of files generic, rather than requiring `/var/www/html/user`
+* Move non-authed commands from server-auth to server-control
