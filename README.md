@@ -84,7 +84,7 @@ Create the Apache host file for your login/UserDB host by creating a file like t
 
 	ServerName login.yourgame.com
 	ServerAdmin webmaster@localhost
-	DocumentRoot /var/www/html/login
+	DocumentRoot /var/www/html/user
 	<Directory /var/www/html/login/>
 		Options FollowSymLinks
 		AllowOverride None
