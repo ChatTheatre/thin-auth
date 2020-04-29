@@ -85,7 +85,7 @@ Create the Apache host file for your login/UserDB host by creating a file like t
 	ServerName login.yourgame.com
 	ServerAdmin webmaster@localhost
 	DocumentRoot /var/www/html/user
-	<Directory /var/www/html/login/>
+	<Directory /var/www/html/user/>
 		Options FollowSymLinks
 		AllowOverride None
 		Require all granted
@@ -142,7 +142,7 @@ Technically, you can call this by a different name if you want, just adjust futu
 
 Fill the `userdb` with standard tables:
 ```
-# cat /var/www/html/login/database/userdb-schema.mysql | mysql -p
+# cat /var/www/html/user/database/userdb-schema.mysql | mysql -p
 ```
 
 #### 6B.1 ALTERNATIVE: Copy a UserDB Table
@@ -185,7 +185,7 @@ _The UserDB is meant to be secured by a firewall. There are Control functions th
 
 Set the Auth and Ctl UserDB servers to automatically run (and rerun) by installing the following into your crontab:
 ```
-* * * * * /var/www/html/login/admin/restartuserdb.sh
+* * * * * /var/www/html/user/admin/restartuserdb.sh
 ```
 This will check the servers every minute, and restart any that isn't running.
 
