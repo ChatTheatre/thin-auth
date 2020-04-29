@@ -1,5 +1,4 @@
 # The SkotOS Thin Auth Server
-# SkotOS Thin Auth Server
 
 The thin auth server is intended to provide logins to SkotOS games, while also supporting payments and a variety of user information. Configuration files help to individualize it for different machines, though fundamentally this is a SkotOS-focused server as it currently stands.
 
