@@ -212,9 +212,11 @@ And:
 ```
 (Technically, both of these adjustments aren't required, but it's best to be thorough, future-proofing your setup.)
 
+You will need to restart `userdb-authctl` afterward, using a command like `/usr/bin/perl /var/skotos/support/misc/userdb-authctl 8000 &`, adjusted correctly for your game instance and the location of your files.
+
 ### 10A. Tell Your Game to Point to the New Login Page
 
-This can be found in `/user/HTTP/sys/httpd.c` in your game instance.
+This can be found in `/usr/HTTP/sys/httpd.c` in your game instance (`/var/skotos/X000/skoot`).
 
 Adjust it to something like the following:
 ```
