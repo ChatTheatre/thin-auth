@@ -15,22 +15,24 @@ Clone the repo onto your game server:
 # git clone https://github.com/skotostech/thin-auth /var/www/html/user
 ```
 
-Note that we currently require installation in `/var/www/html/user`. This could be changed, with `server-admin.php`, `server-control.php`, and `admin/restartuserdb.sh` requiring updates. (Making this more generic is on the [TODO list](TODO.md).)
+Note that we currently require installation in `/var/www/html/user`. This could be changed, with `server-admin.php`, `server-control.php`, and `admin/restartuserdb.sh` requiring updates. (Making this more generic is on the [TODO list](TODO.md).) Obviously, you'll need to adjust later instructions, such as the setup of `apache` too.
+
+(If there's an error here, it may be because you don't currently have an HTML file structure; you can install `apache2` first, as noted in Step 3, or just create `/var/www/html` by hand.)
 
 #### 1A. Copy the Config Files
 
-Config files for the server are stored in the `config` directory. You'll need to move each of the Samples to the correct installed name:
+Config files for the server are stored in the `config` directory. You'll need to move each of the `SAMPLE`s to the correct installed name:
 ```
 # mv database.json-SAMPLE database.json
 # mv financial.json-SAMPLE financial.json
 # mv general.json-SAMPLE general.json
 # mv server.json-SAMPLE server.json
 ```
-You also want to adjust these files as appropriate for your game:
+You also want to edit these files as appropriate for your game:
 
 *datbase.json:* This contains access information for your MariaDB. If you create things using the default `userdb` database name and user name, all you need to change is the password, `dbPass`, which should correspond to your user.
 
-*financial.json:* This contains financial information for paying for access to your game. The only one that must be changed is `paypalAcct`, your Paypal account email address. You can also change the costs for subscriptions or storypoints. the maximum number of Storypoints that can be converted, and the how days are converted when a user moves from a basic account to a premium account. (For a `premiumToBasicConversion` of `n`, the days are multiplied by `1/n`.)
+*financial.json:* This contains financial information for paying for access to your game. The only one that must be changed is `paypalAcct`, your Paypal account email address. You can also change: the costs for subscriptions or storypoints; the maximum number of Storypoints that can be purchased each month; and  how days are converted when a user moves from a basic account to a premium account. (For a `premiumToBasicConversion` of `n`, the days are multiplied by `1/n`.)
 
 *general.json:* This contains all of your game's specific identifying information. Record the URLs of these UserDB pages and the game, the site logo that will be placed in `assets` and a few other things. Expect to change everything in this file, which has been left set to the default of the defunct Lovecraft Country game as an example.
 
@@ -58,7 +60,7 @@ You will need to install Apache, MariaDB, PHP, and related libraries
 # apt-get update
 # apt-get install apache2
 # apt-get install mysql-server
-# apt-get install apt-get install libapache2-mod-php7.0 libapache2-mod-php
+# apt-get install libapache2-mod-php7.0 libapache2-mod-php
 # apt-get install php
 # apt-get install php-mysql
 ```
@@ -68,6 +70,10 @@ You will need to install Apache, MariaDB, PHP, and related libraries
 Make sure that PHP is setup correctly. In particular, enable the `short_open_tag` for the `apache` version of PHP. On Debian, this is currently stored in `/etc/php/7.0/apache/php.ini`:
 ```
 short_open_tag = On
+```
+If you had to change this, restart `apache`:
+```
+# /etc/init.d/apache2 restart
 ```
 
 ### 5. Configure Apache
@@ -90,7 +96,21 @@ Create the Apache host file for your login/UserDB host by creating a file like t
 
 </VirtualHost>
 ```
-You then need to enable the site and restart `apache`:
+Depending on your setup, you may also need to edit `/etc/apache2/ports.conf` to include support for port 443, in preperation for SSL.
+```
+# /etc/apache2/sites-enabled/000-default.conf
+
+Listen YOUR_IP:80
+
+<IfModule ssl_module>
+	Listen YOUR_IP:443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+	Listen YOUR_IP:443
+</IfModule>
+```
+You then need to enable the site and restart `apache` (again):
 ```
 # a2ensite login.conf
 # systemctl reload apache2
@@ -218,3 +238,8 @@ Your UserDB server should now be operating and ready to start accepting users fo
 ### 11. Set an Administrative Users
 
 [todo]
+
+### 12. Administering Your System
+
+[TODO: certbot renew]
+[TODO: git update]
