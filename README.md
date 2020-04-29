@@ -241,5 +241,10 @@ Your UserDB server should now be operating and ready to start accepting users fo
 
 ### 12. Administering Your System
 
+If you ever want to retrieve the newest version of the thin-auth server code from GitHub, you can do so like this:
+```
+# cd /var/www/html/user
+# git pull
+```
+
 [TODO: certbot renew]
-[TODO: git update]
