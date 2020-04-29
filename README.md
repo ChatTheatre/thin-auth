@@ -4,6 +4,8 @@ The thin auth server is intended to provide logins to SkotOS games, while also s
 
 The thin auth server is offered as an alternative to the UserDB built directly from SkotOS. It's meant to be simpler, more accessible, and easier to administer (and modify).
 
+See the [TODO list](TODO.md) for possible improvements.
+
 ## Installing the Thin Auth Server 
 
 To install the thin auth server requires the following steps, which are demonstrated on a Debian system.
