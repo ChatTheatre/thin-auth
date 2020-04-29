@@ -95,9 +95,7 @@ $configInfo = read_config("server.json");
 
    	         $date = date('r');
                  error_log("[$date]: AUTH: recorded a passlogin for $uname\n",3,"/var/log/userdb.log");
-# TODO: REMOVE THIS
-  	         socket_getpeername($read_sock,$read_addr,$read_port);
-                 error_log("[$date]: TEMP INFO [$read_addr: $read_port]: $data\n",3,"/var/log/userdb.log");		 
+		       
 	       } else {
 
  	         $date = date('r');
