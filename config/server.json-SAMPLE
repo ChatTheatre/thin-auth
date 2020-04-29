@@ -1,0 +1,6 @@
+{
+
+    "serverIP": "0.0.0.0",
+    "serverAuthPort": 9970,
+    "serverCtlPort": 9971 
+}
