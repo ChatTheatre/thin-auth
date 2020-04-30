@@ -32,6 +32,7 @@ $configInfo = read_config("server.json");
         }
        
         foreach ($read as $read_sock) {
+	    sleep(.1);
             $data = @socket_read($read_sock, 1024, PHP_NORMAL_READ);
 
      	    if ($data === false) {
