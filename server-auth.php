@@ -23,7 +23,7 @@ $configInfo = read_config("server.json");
         $read = $clients;
 
         if (socket_select($read, $write, $except, 0) < 1) {
-	    sleep(.5)
+	    sleep(.5);
             continue;
 	}
 	    
