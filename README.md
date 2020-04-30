@@ -200,6 +200,8 @@ For a SkotOS game, you should first edit `/usr/System/data/userdb` under `/var/s
 userdb-hostname 127.0.0.1
 userdb-portbase 9900
 ```
+(Please note that the `/usr/System/data` directory also contains the `instance` file where you'd change things like `hostname` and `portbase` for your game, if need be.)
+
 Next, adjust the userdb-authctl glue script, usually located at `/var/skotos/support/misc/userdb-authctl`. 
 
 There should be two lines that need to be set to `localhost`:
