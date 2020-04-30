@@ -9,3 +9,4 @@ Following my initial work, I am leaving this server to the community. The follow
 * Move non-authed commands from server-auth to server-control
 * Add script or instructions to rotate `/var/log/userdb.log`
 * Add watch script for userdb-autctl just in case
+* Better center logo, especially on login page
