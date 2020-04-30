@@ -83,6 +83,9 @@ if ($timeout) {
 <?php //              onload="document.f.uname.focus(); ?>
 <html>
 <head>
+<script type="text/javascript">
+        if (top !== self) top.location.href = self.location.href;
+</script>
 <link rel="stylesheet" href="assets/login.css">
 </head>
 <body>
