@@ -2,7 +2,7 @@
 
 Following my initial work, I am leaving this server to the community. The following are my suggestions for improving it.
 
-* Slow down polling of servers
+* <strike>Slow down polling of servers</strike> (added 60 second timeout on `socket_select`)
 * Add optional link to main WWW pages
 * Add CE/support pages
 * Make location of files generic, rather than requiring `/var/www/html/user`
