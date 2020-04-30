@@ -20,10 +20,10 @@ $configInfo = read_config("server.json");
     $except = NULL;
     
     while (true) {
+	sleep(.1);
         $read = $clients;
 
         if (socket_select($read, $write, $except, 0) < 1) {
-	    sleep(.5);
             continue;
 	}
 	    
