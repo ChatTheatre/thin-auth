@@ -283,6 +283,7 @@ $configInfo = read_config("server.json");
 
 ## MD5Login
 
+		   case "md5auth":
 		   case "md5login":
 
                         if (!is_user_ok($uid,$error)) {
