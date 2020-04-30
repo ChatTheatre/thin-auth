@@ -20,9 +20,10 @@ $configInfo = read_config("server.json");
     $except = NULL;
     
     while (true) {
+#	sleep(.1);    
         $read = $clients;
 
-        if (socket_select($read, $write, $except, 0) < 1)
+        if (socket_select($read, $write, $except, 60) < 1)
             continue;
        
         if (in_array($sock, $read)) {
@@ -32,7 +33,6 @@ $configInfo = read_config("server.json");
         }
        
         foreach ($read as $read_sock) {
-	    sleep(.1);
             $data = @socket_read($read_sock, 1024, PHP_NORMAL_READ);
 
      	    if ($data === false) {
