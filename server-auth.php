@@ -260,17 +260,17 @@ $configInfo = read_config("server.json");
 			        $user_type == "staff" ||
 				$user_type == "free") {
 
-				  socket_nok($read_sock,$seq,"PAID 0 $user_string");
+				  socket_ok($read_sock,$seq,"PAID 0 $user_string");
 
 			     } else if ($user_type == "trial") {
 
 			       $nextStamp = lookup_next_stamp($uid);
-			       socket_nok($read_sock,$seq,"TRIAL $nextStamp $user_string");
+			       socket_ok($read_sock,$seq,"TRIAL $nextStamp $user_string");
 
 			     } else {
 			     
 			       $nextStamp = lookup_next_stamp($uid);
-			       socket_nok($read_sock,$seq,"PAID $nextStamp $user_string");
+			       socket_ok($read_sock,$seq,"PAID $nextStamp $user_string");
 			     }
 			    
                            } else {
