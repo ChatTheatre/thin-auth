@@ -247,10 +247,17 @@ Your UserDB server should now be operating and ready to start accepting users fo
 
 ### 12. Administering Your System
 
+Some additional work will be needed long-term to keep your system up to date.
+
+#### 12A. Updating Your Server
+
 If you ever want to retrieve the newest version of the thin-auth server code from GitHub, you can do so like this:
 ```
 # cd /var/www/html/user
 # git pull
 ```
+Obviously, you will need to restart the servers aftewrard; this can be done by killing the `server-auth.php` and `server-client.php` processes. They will restart from the crontab on the next minute.
+
+#### 12B. Maintaining Your Certs
 
 [TODO: certbot renew]
