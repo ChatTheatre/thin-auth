@@ -1146,6 +1146,17 @@ function create_user($uname,$password,$email) {
   return $return;
 }
 
+function describe_user($uid) {
+
+  $user_type = lookup_account_type($uid);
+  $user_status = query_property($uid,"account_status");
+  $user_status = str_replace(","," ",$user_status);
+			    
+  $user_string = "($user_type;$user_status)";
+  return $user_string;
+  
+}
+
 function is_user_ok($uid,&$error) {
 
   $userinfo = lookup_user($uid);
@@ -2044,7 +2055,7 @@ function query_property($uid,$property) {
 	      return $billReturn;
 	      
 	    } else {
-	      return "";
+              return "";
 	    }
           case "storypoints:total":
 
@@ -2279,6 +2290,34 @@ function set_access_for_user($uid,$flag) {
 
 ## IV.B.3 Flag
 
+function account_with_flag($flag) {
+
+  $SQL = "SELECT name FROM users, flags ";
+  $SQL .= "WHERE users.ID=flags.ID ";
+  $SQL .= "AND flags.flag=:flag ";
+  $SQL .= "AND (users.next_stamp>=:now ";
+  $SQL .= "OR users.account_type='free' ";
+  $SQL .= "OR users.account_type='staff' ";
+  $SQL .= "OR users.account_type='developer') ";
+  $SQL .= "ORDER BY name ";
+
+  global $dbh;
+  $statement = $dbh->prepare($SQL);
+  $now = time();
+  $statement->bindParam(":flag",$flag,PDO::PARAM_STR);
+  $statement->bindParam(":now",$now,PDO::PARAM_INT);  
+  $statement->execute();
+
+  print_r($statement->errorInfo());
+  $people = array();
+  while ($thisResult = $statement->fetchColumn()) {
+    $people[] = $thisResult;
+  }
+
+  return $people;
+  
+}
+
 function delete_flag($uid,$flag) {
 
   if ($flag == "banned") {
@@ -2405,6 +2444,7 @@ function sps_purchased_recent($uid,$length = 0) {
 
 function sps_add($uid,$sps,$reason,$from,$comment) {
 
+echo "$uid/$sps/$reason/$from/$comment";
   global $dbh;
 
   $SQL = "INSERT INTO storypoints (ID,sp_value,sp_date,sp_reason,sp_comment,sp_who) ";
@@ -2419,7 +2459,7 @@ function sps_add($uid,$sps,$reason,$from,$comment) {
   $statement->bindParam(":reason",$reason,PDO::PARAM_STR);
   $statement->bindParam(":comment",$comment,PDO::PARAM_STR);
   $statement->bindParam(":who",$from,PDO::PARAM_STR);
-  
+
   return $statement->execute();
     
 }

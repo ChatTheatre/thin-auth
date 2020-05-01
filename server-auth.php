@@ -248,11 +248,7 @@ $configInfo = read_config("server.json");
 			} else {
 
     	    		  $user_type = lookup_account_type($uid);
-			  $user_status = query_property($uid,"account_status");
-			  $user_status = str_replace(","," ",$user_status);
-			    
-			  $user_string = "($user_type;$user_status)";
-
+			  $user_string = describe_user($uid);
 
   	    		  if (is_paid($uid)) {
 
@@ -296,8 +292,41 @@ $configInfo = read_config("server.json");
 
 			} else {
 
-			  $keycodeinfo = get_keycode_for_user($uid);
-			  socket_ok($read_sock,$seq,$keycodeinfo['keycode']);
+			  if ($command == "md5login") {
+			  
+  			    $keycodeinfo = get_keycode_for_user($uid);
+			    socket_ok($read_sock,$seq,$keycodeinfo['keycode']);
+
+			  } else if ($command == "md5auth") {
+
+    	    		    $user_type = lookup_account_type($uid);
+ 			    $user_string = describe_user($uid);
+
+  	    		    if (is_paid($uid)) {
+
+			      if ($user_type == "developer" ||
+			          $user_type == "staff" ||
+				  $user_type == "free") {
+
+				    socket_ok($read_sock,$seq,"PAID 0 $user_string");
+
+			       } else if ($user_type == "trial") {
+
+			         $nextStamp = lookup_next_stamp($uid);
+			         socket_ok($read_sock,$seq,"TRIAL $nextStamp $user_string");
+
+			       } else {
+			     
+			         $nextStamp = lookup_next_stamp($uid);
+			         socket_ok($read_sock,$seq,"PAID $nextStamp $user_string");
+			       }
+			    
+                             } else {
+			   
+  			       socket_OK($read_sock,$seq,"UNPAID $user_string");
+                             }
+			   
+			  }
 
 			}
 			break;
@@ -316,8 +345,41 @@ $configInfo = read_config("server.json");
                           socket_error($read_sock,$seq,$error);
 
 			} else {
-			  $keycode = set_keycode_for_user($uid);
-			  socket_OK($read_sock,$seq,$keycode);
+			  if ($command == "passlogin") {
+			  
+ 			    $keycode = set_keycode_for_user($uid);
+			    socket_OK($read_sock,$seq,$keycode);
+			    
+			  } else if ($command == "passwordauth") {
+
+    	    		    $user_type = lookup_account_type($uid);
+ 			    $user_string = describe_user($uid);
+
+  	    		    if (is_paid($uid)) {
+
+			      if ($user_type == "developer" ||
+			          $user_type == "staff" ||
+				  $user_type == "free") {
+
+				    socket_ok($read_sock,$seq,"PAID 0 $user_string");
+
+			       } else if ($user_type == "trial") {
+
+			         $nextStamp = lookup_next_stamp($uid);
+			         socket_ok($read_sock,$seq,"TRIAL $nextStamp $user_string");
+
+			       } else {
+			     
+			         $nextStamp = lookup_next_stamp($uid);
+			         socket_ok($read_sock,$seq,"PAID $nextStamp $user_string");
+			       }
+			    
+                             } else {
+			   
+  			       socket_OK($read_sock,$seq,"UNPAID $user_string");
+                             }
+			   
+			   }
 			}
 			break;
 

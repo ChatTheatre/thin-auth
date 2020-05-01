@@ -129,6 +129,25 @@ $configInfo = read_config("server.json");
 
 		      break;
 
+## AccountList
+
+		  case "accountlist":
+
+		       if ($dataParts[2] == "premium") {
+
+		         $premList = account_with_flag("premium");
+			 $premSplat = implode(" ",$premList);
+
+			 socket_nok($read_sock,$seq,$premSplat);
+
+		       } else {
+
+		         socket_error($read_sock,$seq,"Deprecated List");
+
+		       }
+		       break;
+		       
+		  
 ## Announce
 
 		  case "announce":
@@ -412,21 +431,18 @@ $configInfo = read_config("server.json");
 		     } else {
 
 		       if ($dataParts[3] == "use") {
-
-                         $return = sps_add($uid,-$dataParts[4],$dataParts[6],"In-game Purchase","");
-                         if ($return) {
-                           socket_ok($read_sock,$seq,"USED");
-                         } else {
-                           socket_error($read_sock,$seq,"QUE?");
-                         }
-                       } else {
-
-                         $sps = query_property($uid,"storypoints:" . $dataParts[3]);
-                         socket_ok($read_sock,$seq,$sps);
-                       }
-
-	               $sps = query_property($uid,"storypoints:" . $dataParts[3]);
-		       socket_ok($read_sock,$seq,$sps);
+		       
+		         $return = sps_add($uid,-$dataParts[4],$dataParts[6],"In-game Purchase","");
+			 if ($return) {
+			   socket_ok($read_sock,$seq,"USED");
+			 } else {
+			   socket_error($read_sock,$seq,"QUE?");
+			 }		       
+		       } else {
+			     
+	                 $sps = query_property($uid,"storypoints:" . $dataParts[3]);
+ 		         socket_ok($read_sock,$seq,$sps);
+		       }
 		
 		     }
 	             break;
