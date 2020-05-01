@@ -405,7 +405,6 @@ $configInfo = read_config("server.json");
 ## storypoints
 
 		    case "storypoints":
-		     case "sps":
 
 		    if (!$uid) {
 
