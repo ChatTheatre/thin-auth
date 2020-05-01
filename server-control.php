@@ -411,7 +411,7 @@ $configInfo = read_config("server.json");
 
 		     } else {
 			     
-	               $sps = query_property($uid,"sps:" . $dataParts[3]);
+	               $sps = query_property($uid,"storypoints:" . $dataParts[3]);
 		       socket_ok($read_sock,$seq,$sps);
 		
 		     }
