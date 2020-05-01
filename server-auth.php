@@ -94,10 +94,10 @@ $configInfo = read_config("server.json");
 
                $error = "";
 
-	       if ($command == "passlogin") {
+	       if ($command == "passlogin" || $command == "passwordauth") {
 
    	         $date = date('r');
-                 error_log("[$date]: AUTH: recorded a passlogin for $uname\n",3,"/var/log/userdb.log");
+                 error_log("[$date]: AUTH: recorded a $command for $uname\n",3,"/var/log/userdb.log");
 		       
 	       } else {
 
@@ -304,6 +304,7 @@ $configInfo = read_config("server.json");
 			
 ## PASSLOGIN
 
+		    case "passwordauth":
 	     	    case "passlogin":
 
                         if (!is_user_ok($uid,$error)) {
