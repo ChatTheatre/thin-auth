@@ -2444,7 +2444,6 @@ function sps_purchased_recent($uid,$length = 0) {
 
 function sps_add($uid,$sps,$reason,$from,$comment) {
 
-echo "$uid/$sps/$reason/$from/$comment";
   global $dbh;
 
   $SQL = "INSERT INTO storypoints (ID,sp_value,sp_date,sp_reason,sp_comment,sp_who) ";
