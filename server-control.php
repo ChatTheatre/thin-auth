@@ -432,12 +432,22 @@ $configInfo = read_config("server.json");
 
 		       if ($dataParts[3] == "use") {
 		       
-		         $return = sps_add($uid,-$dataParts[4],$dataParts[6],"In-game Purchase","");
+		         $return = sps_add($uid,-$dataParts[4],$dataParts[5],"In-game Purchase","");
 			 if ($return) {
 			   socket_ok($read_sock,$seq,"USED");
 			 } else {
 			   socket_error($read_sock,$seq,"QUE?");
-			 }		       
+			 }
+
+		       } else if ($dataParts[3] == "add") {
+
+		         $return = sps_add($uid,$dataParts[4],$dataParts[5],"In-game Award","");
+			 if ($return) {
+			   socket_ok($read_sock,$seq,"ADDED");
+			 } else {
+			   socket_error($read_sock,$seq,"QUE?");
+			 }
+
 		       } else {
 			     
 	                 $sps = query_property($uid,"storypoints:" . $dataParts[3]);
