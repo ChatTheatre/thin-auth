@@ -412,7 +412,7 @@ $configInfo = read_config("server.json");
 		     } else {
 			     
 	               $sps = query_property($uid,"sps:" . $dataParts[3]);
-		       socket_ok($sps);
+		       socket_ok($read_sock,$seq,$sps);
 		
 		     }
 	             break;
