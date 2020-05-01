@@ -403,6 +403,19 @@ $configInfo = read_config("server.json");
 		    break;
 
 ## storypoints
+		    case "sps":	     
+
+		     if (!$uid) {
+
+		       socket_error($read_sock,$seq,"no such user");
+
+		     } else {
+			     
+	               $sps = query_property($uid,"sps:" . $dataParts[3]);
+		       socket_ok($sps);
+		
+		     }
+	             break;
 
 		    case "storypoints":
 
