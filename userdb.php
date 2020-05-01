@@ -2044,7 +2044,7 @@ function query_property($uid,$property) {
 	      return $billReturn;
 	      
 	    } else {
-	      return array();
+	      return "";
 	    }
           case "storypoints:total":
 
