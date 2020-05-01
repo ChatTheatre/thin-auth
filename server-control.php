@@ -410,7 +410,21 @@ $configInfo = read_config("server.json");
 		       socket_error($read_sock,$seq,"no such user");
 
 		     } else {
-			     
+
+		       if ($dataParts[3] == "use") {
+
+                         $return = sps_add($uid,-$dataParts[4],$dataParts[6],"In-game Purchase","");
+                         if ($return) {
+                           socket_ok($read_sock,$seq,"USED");
+                         } else {
+                           socket_error($read_sock,$seq,"QUE?");
+                         }
+                       } else {
+
+                         $sps = query_property($uid,"storypoints:" . $dataParts[3]);
+                         socket_ok($read_sock,$seq,$sps);
+                       }
+
 	               $sps = query_property($uid,"storypoints:" . $dataParts[3]);
 		       socket_ok($read_sock,$seq,$sps);
 		
