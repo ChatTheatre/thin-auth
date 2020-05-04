@@ -100,8 +100,6 @@ Create the Apache host file for your login/UserDB host by creating a file like t
 ```
 Depending on your setup, you may also need to edit `/etc/apache2/ports.conf` to include support for port 443, in preperation for SSL.
 ```
-# /etc/apache2/sites-enabled/000-default.conf
-
 Listen YOUR_IP:80
 
 <IfModule ssl_module>
