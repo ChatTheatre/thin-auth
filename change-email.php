@@ -35,14 +35,14 @@ $cancel = $_GET['cancel'];
 
     if ($complaint == "USER HAS NO EMAIL") {
 
-      $complaint = "You must validate an email address. Please check your email and/or your spam box for the verification message.<br> If you've lost it, you can request a new message by filling in this form.";
+      $complaint = "You must validate an email address. Please check your email and/or your spam box for the verification message.<p> If you've lost it, you can request a new message by filling in this form.";
 
     } else if ($complaint == "USER HAS NEW EMAIL") {
 
       getPing($auth_sock,$uname,$pass,$pinginfo,$complaint);
       $code = $pinginfo['code'];
       
-      $complaint = "You must validate your new email address. Please check your email and/or your spam box for the verification message.<br> If you've lost it, you can request a new message by filling in this form. If you prefer, you can alternatively <a href=\"" . $_SERVER['PHP_SELF'] . "?cancel=$code\">cancel your email-address update</a>.";
+      $complaint = "You must validate your new email address. Please check your email and/or your spam box for the verification message.<p> If you've lost it, you can request a new message by filling in this form. If you prefer, you can alternatively <a href=\"" . $_SERVER['PHP_SELF'] . "?cancel=$code\">cancel your email-address update</a>.";
 
     }
   }
