@@ -1507,7 +1507,6 @@ function bump_days($uid,$days) {
     $nextDay = $thisStamp['mday'];
     
   }
-echo "BUMPING FORM $nextMonth / $nextDay / $nextYear\n";
   $nextDay += $days;
 
   while ($nextDay > 28) {
@@ -1521,7 +1520,6 @@ echo "BUMPING FORM $nextMonth / $nextDay / $nextYear\n";
   }
 
   $nextStamp = strtotime("$nextMonth/$nextDay/$nextYear");
-echo "+ $days = $nextMonth / $nextDay / $nextYear\n";  
   $SQL = "UPDATE users ";
   $SQL .= "SET next_year=:ny,next_month=:nm,pay_day=:nd,next_stamp=:ns ";
   $SQL .= "WHERE ID=:uid ";
