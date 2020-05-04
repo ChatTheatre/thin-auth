@@ -34,7 +34,7 @@ $siteName = $config['siteName'];
 
     
   } else if ($pinginfo['code'] != $email_code) {
-    $complaint = "This email update is out-of-date. Please <a href='change-email.phtml'>try again</a>.";
+    $complaint = "This email update is out-of-date. Please <a href='change-email.php'>try again</a>.";
   } else {
 
     deletePing($ctl_sock,$user,TRUE,$complaint);
