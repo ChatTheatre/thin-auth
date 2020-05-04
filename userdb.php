@@ -1151,9 +1151,28 @@ function describe_user($uid) {
   $user_type = lookup_account_type($uid);
   $user_status = query_property($uid,"account_status");
   $user_status = str_replace(","," ",$user_status);
-			    
+
+  if (is_user_freebie($uid)) {
+    $user_status .= " freebie";
+  }
+  
   $user_string = "($user_type;$user_status)";
   return $user_string;
+  
+}
+
+function is_user_freebie($uid) {
+
+  $userinfo = lookup_user($uid);
+  if ($userinfo['account_type'] == "free" ||
+      $userinfo['account_type'] == "developer" ||
+      $userinfo['account_type'] == "staff") {
+
+      return FALSE;
+
+  }
+
+  return ($userinfo['next_stamp'] < time());
   
 }
 
@@ -1461,6 +1480,62 @@ function update_user_value($uid,$property,$value) {
 }
 
 ## IV.A.3 Payments
+
+function bump_days($uid,$days) {
+
+  global $dbh;
+  
+  $SQL = "SELECT next_month, next_year, pay_day, next_stamp FROM users ";
+  $SQL .= "WHERE ID=:uid ";
+
+  $statement = $dbh->prepare($SQL);
+  $statement->bindParam(":uid",$uid,PDO::PARAM_INT);
+  $statement->execute();
+
+  $nextInfo = $statement->fetch(PDO::FETCH_ASSOC);
+
+  $nextMonth = $nextInfo['next_month'];
+  $nextYear = $nextInfo['next_year'];
+  $nextDay = $nextInfo['pay_day'];
+  $nextStamp = $nextInfo['next_stamp'];
+
+  if ($nextStamp < time()) {
+
+    $thisStamp = getdate();
+    $nextMonth = $thisStamp['mon'];
+    $nextYear = $thisStamp['year'];
+    $nextDay = $thisStamp['mday'];
+    
+  }
+echo "BUMPING FORM $nextMonth / $nextDay / $nextYear\n";
+  $nextDay += $days;
+
+  while ($nextDay > 28) {
+    $nextMonth++;
+    $nextDay -= 28;
+  }
+
+  while ($nextDay < 0) {
+    $nextMonth --;
+    $nextDay += 28;
+  }
+
+  $nextStamp = strtotime("$nextMonth/$nextDay/$nextYear");
+echo "+ $days = $nextMonth / $nextDay / $nextYear\n";  
+  $SQL = "UPDATE users ";
+  $SQL .= "SET next_year=:ny,next_month=:nm,pay_day=:nd,next_stamp=:ns ";
+  $SQL .= "WHERE ID=:uid ";
+
+  $statement = $dbh->prepare($SQL);
+  $statement->bindParam(":ny",$nextYear,PDO::PARAM_INT);
+  $statement->bindParam(":nm",$nextMonth,PDO::PARAM_INT);
+  $statement->bindParam(":nd",$nextDay,PDO::PARAM_INT);
+  $statement->bindParam(":ns",$nextStamp,PDO::PARAM_INT);      
+  $statement->bindParam(":uid",$uid,PDO::PARAM_INT);
+  $statement->execute();
+
+  
+}
 
 function bump_months($uid,$months) {
 
@@ -2548,8 +2623,9 @@ function log_play($uid, $start, $time) {
   $statement->bindParam(":uid",$uid,PDO::PARAM_INT);
   $statement->bindParam(":start",$start,PDO::PARAM_INT);
   $statement->bindParam(":duration",$time,PDO::PARAM_INT);  
-  $statement->execute();
+  $return = $statement->execute();
 
+  return $return;
 }
 
 
