@@ -32,7 +32,7 @@ Config files for the server are stored in the `config` directory. You'll need to
 ```
 You also want to edit these files as appropriate for your game:
 
-*datbase.json:* This contains access information for your MariaDB. If you create things using the default `userdb` database name and user name, all you need to change is the password, `dbPass`, which should correspond to your user.
+*database.json:* This contains access information for your MariaDB. If you create things using the default `userdb` database name and user name, all you need to change is the password, `dbPass`, which should correspond to your user.
 
 *financial.json:* This contains financial information for paying for access to your game. The only one that must be changed is `paypalAcct`, your Paypal account email address. You can also change: the costs for subscriptions or storypoints; the maximum number of Storypoints that can be purchased each month; and  how days are converted when a user moves from a basic account to a premium account. (For a `premiumToBasicConversion` of `n`, the days are multiplied by `1/n`.)
 
