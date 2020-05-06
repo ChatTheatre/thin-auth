@@ -617,6 +617,25 @@ function set_password_for_user($uid,$password) {
 
 ## IIC. Auth Server: Properties
 
+function checkAccess(&$auth_sock, $uname, $pass, $gameid, &$complain) {
+   if (!connect_auth_sock($auth_sock, $complaint)) {
+      return FALSE;
+   }
+   fputs($auth_sock, ":" .
+   	 urlencode(strtolower($uname))	. " " .
+   	 $pass				. " " .
+   	 "checkaccess 1"			. " " .
+   	 $gameid				. "\n");
+
+   $result = fgets($auth_sock, 16384);
+   if (substr($result, 2, 2) == "OK") {
+      return TRUE;
+   }
+   $complaint = "UserDB error: " . urldecode(chop(substr($result, 6)));
+   return FALSE;
+}
+
+
 function convertAccount(&$auth_sock, $uname, $code, $towhat, &$complaint) {
    if (!connect_auth_sock($auth_sock, $complaint)) {
       return FALSE;
@@ -676,6 +695,15 @@ function getNewProperty(&$auth_sock, $uname, $pass, &$complaint, $prop) {
    $complaint = "UserDB error: " . urldecode(chop(substr($result, 6)));
    return FALSE;
 }
+
+function isAdmin(&$auth_sock, $uname, $pass, &$complaint) {
+
+  $genConfig = read_config("general.json");
+  $gameName = $genConfig["gameID"];
+  return checkAccess($auth_sock,$uname, $pass, $gameName,$complaint);
+  
+}
+
 
 ## III. Control Server
 
@@ -2325,7 +2353,7 @@ function query_access($uid,$flag) {
 
   global $dbh;
 
-  $SQL = "SELECT * FROM flags ";
+  $SQL = "SELECT * FROM access ";
   $SQL .= "WHERE ID=:id ";
   $SQL .= "AND game=:flag ";
 

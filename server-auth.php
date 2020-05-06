@@ -108,6 +108,28 @@ $configInfo = read_config("server.json");
 
 	       switch ($command) {
 
+## checkaccess
+
+		   case "checkaccess":
+
+                        if (!is_user_ok($uid,$error)) {
+
+                          socket_error($read_sock,$seq,$error);
+			  
+  			} else if ($code && !is_keycode_ok($uid,$code,$error)) {
+			
+                          socket_error($read_sock,$seq,$error);
+			  
+                        } else {
+
+			  if (query_access($uid,$dataArgs[0])) {
+			    socket_ok($read_sock,$seq,"ACCESS");
+			  } else {
+			    socket_error($read_sock,$seq,"NOAUTH");
+			  }
+			}
+			break;
+			  
 ## convertaccount
 
 		   case "convertaccount":
