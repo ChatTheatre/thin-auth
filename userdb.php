@@ -537,11 +537,11 @@ function get_password_for_user($uid) {
 
 # This should be commented out or something after initial work
 
-  $userinfo = lookup_user($uid);
-  if (!$userinfo['user_updated']) {
-    require_once("userdb-convert.php");
-    convert_old_user($uid);
-  }
+#  $userinfo = lookup_user($uid);
+#  if (!$userinfo['user_updated']) {
+#    require_once("userdb-convert.php");
+#    convert_old_user($uid);
+#  }
 
   global $dbh;
   
