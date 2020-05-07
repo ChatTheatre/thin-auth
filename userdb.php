@@ -855,12 +855,16 @@ function getAccountStatus(&$ctl_sock, $uname, $setting, &$complaint) {
 	  $result = chop(substr($result, 5));
 	  if (strlen($result) > 0) {
 	      $list = explode(" ", $result);
-	      for ($i = 0; $i < count($list); $i++) {
+	      if ($setting == "all") {
+	        return $list;
+	      } else {
+	        for ($i = 0; $i < count($list); $i++) {
 		  if ($list[$i] == $setting) {
 		      return TRUE;
 		  }
-	      }
-	      return FALSE;
+	        }
+	        return FALSE;
+	      }	
 	  }
 	  return FALSE;
       }
