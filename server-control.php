@@ -140,6 +140,13 @@ $configInfo = read_config("server.json");
 
 			 socket_nok($read_sock,$seq,$premSplat);
 
+		       } else if ($dataParts[2] == "premium/regular") {
+
+		         $premList = regular_account_with_flag("premium");
+			 $premSplat = implode(" ",$premList);
+
+			 socket_nok($read_sock,$seq,$premSplat);
+
 		       } else {
 
 		         socket_error($read_sock,$seq,"Deprecated List");

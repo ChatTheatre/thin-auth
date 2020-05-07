@@ -707,6 +707,28 @@ function isAdmin(&$auth_sock, $uname, $pass, &$complaint) {
 
 ## III. Control Server
 
+function accountList(&$ctl_sock, $type, &$complaint) {
+
+    if (!connect_ctl_sock($ctl_sock, $complaint)) {
+        return FALSE;
+    }
+    fputs($ctl_sock,
+          "accountlist 1 "        .
+          urlencode($type)  . "\n");
+
+    $result = fgets($ctl_sock, 2048);
+    if (substr($result, 2, 2) == "OK") {
+        $list = urldecode(substr($result,5));
+	if ($list) {
+	  return explode(" ",$list);
+	} else {
+  	  return array();
+	}
+    }
+    $complaint = "UserDB error: " . substr($result, 6);
+    return FALSE;
+}
+
 function banUser(&$ctl_sock, $uname, $reason, $whom, &$complaint) {
     if (!connect_ctl_sock($ctl_sock, $complaint)) {
         return FALSE;
@@ -2422,6 +2444,34 @@ function account_with_flag($flag) {
   return $people;
   
 }
+
+function regular_account_with_flag($flag) {
+
+  $SQL = "SELECT name FROM users, flags ";
+  $SQL .= "WHERE users.ID=flags.ID ";
+  $SQL .= "AND flags.flag=:flag ";
+  $SQL .= "AND users.account_type='regular' ";
+  $SQL .= "AND users.next_stamp>=:now ";
+  $SQL .= "ORDER BY name ";
+
+  global $dbh;
+  $statement = $dbh->prepare($SQL);
+  $now = time();
+  $statement->bindParam(":flag",$flag,PDO::PARAM_STR);
+  $statement->bindParam(":now",$now,PDO::PARAM_INT);  
+  $statement->execute();
+echo "$SQL / $flag / $now";
+
+  print_r($statement->errorInfo());
+  $people = array();
+  while ($thisResult = $statement->fetchColumn()) {
+    $people[] = $thisResult;
+  }
+
+  return $people;
+  
+}
+
 
 function delete_flag($uid,$flag) {
 
