@@ -8,6 +8,7 @@
     "premiumQuarter": "79.95",
     "premiumYear": "299.95",
     "premiumToBasicConversion": "2.3",
+    "monthlyPremiumSPs": "50",
     "spMaxBasic": "50",
     "spCostBasic": "34.95",
     "spMaxPremium": "250",
