@@ -169,7 +169,7 @@ if ($submit) {
   </tr>
   <tr>
     <td colspan=2>
-      <input type="checkbox" id="tos" name="tos" value="1">I have read and agree to the <a href="tos.php" target="_blank">Terms of Service</a>.
+      <input type="checkbox" id="tos" name="tos" value="1">I have read and agree to the <a href="view-tos.php" target="_blank">Terms of Service</a>.
   <tr>
     <td colspan=2 align="right">
       <input type="submit">

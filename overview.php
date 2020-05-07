@@ -117,6 +117,10 @@ $paypalCF = read_config("financial.json");
           <li><a href="http://<? echo $config['gameURL']; ?>">Play Game</a>
           <li><a href="change-passwd.php">Change Password</a>
           <li><a href="change-email.php">Change Email</a>
+	  <br><br>
+          <li><a href="view-privacy.php">View Privacy Policy</a>	  
+          <li><a href="view-tos.php">View TOS</a>
+	  <br><br>
           <li><a href="delete-account.php">Delete Account</a>
           <li><a href="logout.php">Logout</a>
         </ul>
