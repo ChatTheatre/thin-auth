@@ -110,22 +110,63 @@ $paypalCF = read_config("financial.json");
 <br>
 <? } ?>      
       </div>
-
       <div class="acctinfo">
-        <div class="titlebar">Account Options</div>
-        <ul>
-          <li><a href="http://<? echo $config['gameURL']; ?>">Play Game</a>
-          <li><a href="change-passwd.php">Change Password</a>
-          <li><a href="change-email.php">Change Email</a>
-	  <br><br>
-          <li><a href="view-privacy.php">View Privacy Policy</a>	  
-          <li><a href="view-tos.php">View TOS</a>
-	  <br><br>
-          <li><a href="delete-account.php">Delete Account</a>
-          <li><a href="logout.php">Logout</a>
-        </ul>
+        <table width='100%'>
+          <tr>
+	    <td colspan=2>
+              <div class="titlebar">Main Options</div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td width='50%'>
+	      <ul>
+	      <br>
+              <li><a href="http://<? echo $config['gameURL']; ?>">Play Game</a>
+              <li><a href="logout.php">Logout Account</a>
+	      </ul>
+	    </td>
+	    <td width='50%'>
+	      <p><ul>
+	      <br>
+              <li><a href="change-passwd.php">Change Pass</a>
+              <li><a href="change-email.php">Change Email</a>
+	      </ul>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan=2>
+              <div class="titlebar subbar">View Docs</div>
+	    </td>
+	  <tr>
+	  <tr>
+	    <td width='50%'>
+              <ul>
+	        <br>
+                <li><a href="view-tos.php">View TOS</a>
+	      </ul>
+	    </td>
+	    <td width='50%'>
+	      <ul>
+	        <br>
+                <li><a href="view-privacy.php">View Privacy</a>
+              </ul>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan=2>
+              <div class="titlebar subbar">Leave Game</div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan=2>
+	      <ul>
+	        <br>
+                <li><a href="delete-account.php">Delete Account</a>
+              </ul>
+            </td>
+          </tr>
+        </table>
       </div>
-
     </td>
     <td>
 
