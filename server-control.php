@@ -58,18 +58,26 @@ $configInfo = read_config("server.json");
 	      
 	   } else {
 
-   	     $date = date('r');
-	     error_log("[$date]: CTL: $data\n",3,"/var/log/userdb.log");
-
 	     for ($i = 0 ; $i < sizeof($dataParts) ; $i++) {
 	       $dataParts[$i] = urldecode($dataParts[$i]);
 	     }
  
-             $dbh = load_db();
-
 	     $command = $dataParts[0];
 	     $seq = $dataParts[1];
-	     $uname =$dataParts[2];
+	     $uname = $dataParts[2];
+
+   	     $date = date('r');
+             if ($command == "setpwd" || $command == "setpwdg") {
+
+               error_log("[$date]: CTL: recorded a $command for $uname\n",3,"/var/log/userdb.log");
+
+             } else {
+	     
+	       error_log("[$date]: CTL: $data\n",3,"/var/log/userdb.log");
+
+             }
+
+             $dbh = load_db();
  	     $uid = lookup_uid_by_name($uname);
 	     
 	     switch ($command) {
