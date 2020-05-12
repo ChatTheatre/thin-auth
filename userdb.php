@@ -1085,6 +1085,24 @@ function billingCredit(&$ctl_sock, $uname, $months, $log_who, &$complaint) {
     return FALSE;
 }
 
+function billingCreditDays(&$ctl_sock, $uname, $days, $log_who, &$complaint) {
+    if (!connect_ctl_sock($ctl_sock, $complaint)) {
+        return FALSE;
+    }
+    fputs($ctl_sock,
+	  "billcreditdays 1 " .
+	  urlencode($uname)          . " " .
+	  urlencode($days)         . " " .
+	  urlencode($log_who)        . "\n");
+    $result = fgets($ctl_sock, 2048);
+    if (substr($result, 2, 2) == "OK") {
+	return chop(substr($result, 5));
+    }
+    $problem = substr($result, 6);
+    $complaint = "UserDB error: " . $problem;
+    return FALSE;
+}
+
 function logBilling(&$ctl_sock, $uname, $type, $amt, $cost, $pending, &$complaint) {
 
    if (!connect_ctl_sock($ctl_sock, $complaint)) {

@@ -184,6 +184,20 @@ $configInfo = read_config("server.json");
 
 			 }
 			 break;
+
+		   case "billcreditdays":
+
+                        if (!$uid) {
+			
+                          socket_error($read_sock,$seq,"USER UNKNOWN");
+
+			 } else {
+
+			   bump_days($uid,$dataParts[3]);
+			   socket_OK($read_sock,$seq,"OK");
+
+			 }
+			 break;
 			 
 ## CE_Ban
 
