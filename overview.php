@@ -20,8 +20,8 @@ $paypalCF = read_config("financial.json");
 	    urlencode($_SERVER['PHP_SELF'] . ($_SERVER['QUERY_STRING'] ? "?" . $_SERVER['QUERY_STRING'] : "")));
      exit;
   }
-
- 
+  $isAdmin = isAdmin($auth_sock,$user,$pass,$complaint);
+  
   $complaint = "";
 
 # RECORDS LOTS MORE INFO
@@ -133,6 +133,29 @@ $paypalCF = read_config("financial.json");
 	      </ul>
 	    </td>
 	  </tr>
+<? if ($isAdmin) { ?>
+	  <tr>
+	    <td colspan=2>
+              <div class="titlebar subbar">Admin Options</div>
+	    </td>
+	  <tr>
+	  <tr>
+	    <td width='50%'>
+              <ul>
+	        <br>
+                <li><a href="support.php">Go to Support</a>
+	      </ul>
+	    </td>
+	    <? if ($config['woeURL']) { ?>
+	    <td width='50%'>
+	      <ul>
+	        <br>
+                <li><a href="http://<? echo $config['woeURL']; ?>">Go to Woe</a>
+              </ul>
+	    </td>
+	    <? } ?>
+	  </tr>	  
+<? } ?>
 	  <tr>
 	    <td colspan=2>
               <div class="titlebar subbar">View Docs</div>
@@ -152,6 +175,7 @@ $paypalCF = read_config("financial.json");
               </ul>
 	    </td>
 	  </tr>
+<? if (!$isAdmin) { ?>	  
 	  <tr>
 	    <td colspan=2>
               <div class="titlebar subbar">Leave Game</div>
@@ -165,6 +189,7 @@ $paypalCF = read_config("financial.json");
               </ul>
             </td>
           </tr>
+<? } ?>	  
         </table>
       </div>
     </td>
