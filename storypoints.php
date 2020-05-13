@@ -8,7 +8,6 @@ $siteName = $config['siteName'];
 
   $user = $_COOKIE["user"];
   $pass = $_COOKIE["pass"];
-  $uid = getNewProperty($auth_sock, $user, $pass, $complaint, "ID");
 
   if ($user == "" || checkTimeOut($auth_sock, $user, $pass, $complaint)) {
      Header("Location: login.php?email-code=$email_code&timeout=1&timeout_from=" .
@@ -16,11 +15,24 @@ $siteName = $config['siteName'];
      exit;
   }
 
+  $id = $_GET['id'];
+  $isAdmin = isAdmin($auth_sock,$user,$pass,$complaint);
+
+  if ($id && $isAdmin) {
+    $thisUser = urldecode($id);
+  } else {
+    $thisUser = $user;
+  }
+
   $complaint = "";
-  storypoints_log($ctl_sock, $user, $sps_log, $complaint);
+  storypoints_log($ctl_sock, $thisUser, $sps_log, $complaint);
 
   if (!$sps_log && !$complaint) {
-    $complaint = "You have no storypoints log!";
+    if ($id  && $isAdmin) {
+      $complaint = "$id has no storypoints log!";    
+    } else {
+      $complaint = "You have no storypoints log!";
+    }  
   }
 ?>
 
@@ -40,7 +52,11 @@ $siteName = $config['siteName'];
     <td>
 <div class='acctinfo doublewide'>
   <div class='titlebar'>
+<? if ($id && $isAdmin) { ?>
+    <? echo $id; ?> Storypoints Log
+<? } else { ?>
     Storypoints Log
+<? } ?>    
   </div>
   
 <? if ($complaint) {
@@ -72,7 +88,11 @@ $siteName = $config['siteName'];
 <? } ?>
     </table>
 <? } ?>
+<? if ($id && $isAdmin) { ?>
+<p align="right"><i>return to <a href="support.php">support</a></i></p>
+<? } else { ?>
 <p align="right"><i>return to <a href="overview.php">overview</a></i></p>
+<? } ?>
   </div>
     </td>
   </tr>

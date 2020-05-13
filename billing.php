@@ -17,9 +17,22 @@ $siteName = $config['siteName'];
 
   $complaint = "";
 
-  $bill_log = getNewProperty($auth_sock,$user,$pass,$complaint,"billinglog");
+  $id = $_GET['id'];
+  $isAdmin = isAdmin($auth_sock,$user,$pass,$complaint);
+
+  if ($id && $isAdmin) {
+    $thisUser = urldecode($id);
+  } else {
+    $thisUser = $user;
+  }
+
+  $bill_log = getProperty($ctl_sock,$thisUser,$complaint,"billinglog");
   if (!$bill_log && !$complaint) {
-    $message = "You have not yet paid for $siteName.";
+    if ($id && $isAdmin) {
+      $message = "$id has not yet paid for $siteName.";    
+    } else {
+      $message = "You have not yet paid for $siteName.";
+    }
   }
 ?>
 
@@ -34,7 +47,11 @@ $siteName = $config['siteName'];
     <td>
 <div class='acctinfo doublewide'>
   <div class='titlebar'>
+<? if ($id && $isAdmin) { ?>
+    <? echo $id; ?> Billing Log
+<? } else { ?>
     Billing Log
+<? } ?>    
   </div>
   
 <? if ($complaint) {
@@ -68,7 +85,11 @@ $siteName = $config['siteName'];
 <? } ?>
     </table>
 <? } ?>
+<? if ($id && $isAdmin) { ?>
+<p align="right"><i>return to <a href="support.php">support</a></i></p>
+<? } else { ?>
 <p align="right"><i>return to <a href="overview.php">overview</a></i></p>
+<? } ?>
   </div>
     </td>
   </tr>
