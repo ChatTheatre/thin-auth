@@ -92,9 +92,30 @@ $configInfo = read_config("server.json");
 
 		     } else {
 
-		    	 $subcommand = $dataParts[3] . " " . $dataParts[4];
-			 $flagsList = list_flags();
+			 if ($dataParts[3] == "stats") {
 
+			   if (sizeof($dataParts) > 4) {
+			     $plays = list_plays($uid, $dataParts[4]);
+			   } else {
+			     $plays = list_plays($uid, 0);
+			   }
+
+			   $generalInfo = read_config("general.json");
+			   $gameName = $generalInfo['gameID'];
+			   
+			   if (!$plays) {
+			     socket_ok($read_sock,$seq,$gameName);
+			   } else {
+			     $returnInfo = $gameName . "," . implode(",",$plays);
+			     socket_ok($read_sock,$seq,$returnInfo);
+			   }
+			   break;
+			 }
+			   
+			     
+              	         $subcommand = $dataParts[3] . " " . $dataParts[4];
+			 $flagsList = list_flags();
+			 
 			 if ($subcommand == "clear status") {
 
 			   $thisFlag = $dataParts[5];

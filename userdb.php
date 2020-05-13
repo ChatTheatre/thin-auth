@@ -1179,7 +1179,40 @@ function unusedPaypalTxnid(&$ctl_sock,$txnid,&$complaint) {
       return FALSE;
     }
 }
+## III.F Playing
 
+function playing_history(&$ctl_sock, $uname, $stamp, &$value, &$complaint) {
+
+    if (!connect_ctl_sock($ctl_sock, $complaint)) {
+      return FALSE;
+    }
+    if ($stamp) {
+
+      fputs($ctl_sock,
+        "account 1 " .
+        urlencode($uname) . " " .
+        "stats" . " " .
+	$stamp . "\n");
+	
+    } else {
+    
+      fputs($ctl_sock,
+        "account 1 " .
+        urlencode($uname) . " " .
+        "stats\n");
+	
+    }
+    
+    $result = chop(fgets($ctl_sock, 65535));
+    if (substr($result, 2, 2) == "OK") {
+      $value = substr($result, 5);
+      $value = explode(",",$value);
+      return TRUE;
+    }
+    $complaint = "UserDB error: " . substr($result, 6);
+    return FALSE;
+}
+																														      
 ## IV. Database
 
 ## IV.A. Users
@@ -2478,7 +2511,6 @@ function regular_account_with_flag($flag) {
   $statement->bindParam(":flag",$flag,PDO::PARAM_STR);
   $statement->bindParam(":now",$now,PDO::PARAM_INT);  
   $statement->execute();
-echo "$SQL / $flag / $now";
 
   print_r($statement->errorInfo());
   $people = array();
@@ -2709,6 +2741,37 @@ function sps_available($uid) {
 }
 
 ## IV.D: Play
+
+function list_plays($uid,$time) {
+
+  global $dbh;
+
+  if (!$time) {
+    $time = 30 * 86400;
+  }
+  $oldTime = time() - $time;
+  
+  $SQL = "SELECT stamp,duration FROM plays ";
+  $SQL .= "WHERE ID=:uid ";
+  $SQL .= "AND stamp>=:oldtime ";
+  $SQL .= "ORDER BY stamp ";
+
+  $statement = $dbh->prepare($SQL);
+  $statement->bindParam(":uid",$uid,PDO::PARAM_INT);
+  $statement->bindParam(":oldtime",$oldTime,PDO::PARAM_INT);  
+  $return = $statement->execute();
+
+  if (!$return) {
+    return FALSE;
+  }
+
+  $plays = array();
+  while ($thisResult = $statement->fetch(PDO::FETCH_ASSOC)) {
+    $plays[] = $thisResult['stamp'] . "," . $thisResult['duration'];
+  }
+  return $plays;
+  
+}
 
 function log_play($uid, $start, $time) {
 
