@@ -247,7 +247,19 @@ Your UserDB server should now be operating and ready to start accepting users fo
 
 ### 11. Set an Administrative Users
 
-[todo]
+If you started with the standard UserDB tables in step 6B, you will now need to bootstrap yourself an administrative user.
+
+First, create a user using your web interface.
+
+Then, go to MySQL and give that user 'access' for your gameID as set in your `general.json` config file.
+```
+# mysql
+> use userdb;
+> INSERT INTO access (ID, game) values (1, 'lcabn');
+```
+(This example would give UID #1 login-admin permissions for the gameID `lcabn`).
+
+Afterward, you can then use the `support.php` page for other administrative work.
 
 ### 12. Administering Your System
 
