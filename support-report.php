@@ -125,6 +125,10 @@ $siteName = $config['siteName'];
 <p align="right"><i>return to <a href="overview.php">overview</a></i></p>
 <? } ?>
   </div>
+  <div class="acctinfo doublewide" align='center'>
+      <i>return to: <a href="support.php">support page</a> •
+      <a href="overview.php">your overview</a></i>
+  </div>
     </td>
   </tr>
 </form>

@@ -268,6 +268,11 @@
       <input type="submit">
       </form>
       </div>
+      <div class="acctinfo">
+          <i>go to: <a href="support-report.php">report page</a> •
+	  <a href="overview.php">your overview</a></i>
+     </div>
+
 
 <? } ?>
 
