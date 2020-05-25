@@ -419,7 +419,51 @@ $configInfo = read_config("server.json");
 		   }
 
 		   break;
-		   
+
+## Report
+
+		    case "report":
+
+		    if ($dataParts[3] == "oldest") {
+		      $oldestDate = query_oldest_log();
+		      if ($oldestDate) {
+		        socket_ok($read_sock,$seq,$oldestDate);
+		      } else {
+		        socket_error($read_sock,$seq,"NO DATA");
+		      }
+		    } else {
+		      if (sizeof($dataParts) == 4) {
+		        socket_error($read_sock,$seq,"NO DATE");
+		      } else {
+  		        list($month,$year) = explode("/",$dataParts[4]);
+			if (!$month || !$year) {
+			  socket_error($read_sock,$seq,"INCORRECTLY FORMATTED DATE");
+			} else {
+			
+			  if ($dataParts[3] == "pay") {
+			    $thisInfo = query_pay_info($month,$year);
+
+		      	    $returnString = "basic," . $thisInfo['basicCount'] . "," . $thisInfo['basicAmt'] . "," . $thisInfo['basicCost'];
+		      	    $returnString .= ",premium," . $thisInfo['premiumCount'] . "," . $thisInfo['premiumAmt'] . "," . $thisInfo['premiumCost'];
+		      	    $returnString .= ",sps," . $thisInfo['spsCount'] . "," . $thisInfo['spsAmt'] . "," . $thisInfo['spsCost'];
+			    
+			    socket_ok($read_sock,$seq,$returnString);
+
+			  } else if ($dataParts[3] == "play") {
+			  
+			    $thisInfo = query_play_info($month,$year);
+			    $returnString = "plays," . $thisInfo['playAmt'] . ",users," . $thisInfo['userAmt'] . ",time," . $thisInfo['timeAmt'];
+			    socket_ok($read_sock,$seq,$returnString);
+			    
+			  } else {
+			  
+			    socket_error($read_sock,$seq,"UNKNOWN REPORT");
+			  }  
+		        }
+	              }
+		    }
+
+		    break;
 ## Setprop
 
 		    case "setprop":

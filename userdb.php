@@ -1,13 +1,4 @@
 <?php
-/*
-**	This function returns TRUE only if a connection is made
-**	successfully -and- the particular problem with the cookie
-**	is that it has timed out. If the return value is FALSE,
-**	the caller should examine the $complaint variable.
-**
-**	See checkNextStep() for other actions taken on return
-**	values from keycodeauth.
-*/
 
 #require_once("log_global.php");
 
@@ -1179,7 +1170,8 @@ function unusedPaypalTxnid(&$ctl_sock,$txnid,&$complaint) {
       return FALSE;
     }
 }
-## III.F Playing
+## III.F Other Reports
+
 
 function playing_history(&$ctl_sock, $uname, $stamp, &$value, &$complaint) {
 
@@ -1212,7 +1204,48 @@ function playing_history(&$ctl_sock, $uname, $stamp, &$value, &$complaint) {
     $complaint = "UserDB error: " . substr($result, 6);
     return FALSE;
 }
-																														      
+
+function report_oldest(&$ctl_sock, &$date, $complaint) {
+
+    if (!connect_ctl_sock($ctl_sock, $complaint)) {
+      return FALSE;
+    }
+    
+    fputs($ctl_sock,
+      "report 1 " .
+        "XXX " .
+        "oldest\n");
+	
+    $result = chop(fgets($ctl_sock, 65535));
+    if (substr($result, 2, 2) == "OK") {
+      $date = substr($result, 5);
+      return TRUE;
+    }
+    $complaint = "UserDB error: " . substr($result, 6);
+    return FALSE;
+}
+
+function report_other(&$ctl_sock, $command, $sel_date, &$this_return, $complaint) {
+
+    if (!connect_ctl_sock($ctl_sock, $complaint)) {
+      return FALSE;
+    }
+    
+    fputs($ctl_sock,
+      "report 1 " .
+        "XXX " .
+        "$command $sel_date\n");
+	
+    $result = chop(fgets($ctl_sock, 65535));
+    if (substr($result, 2, 2) == "OK") {
+      $result = substr($result, 5);
+      $this_return = explode(",",$result);
+      return TRUE;
+    }
+    $complaint = "UserDB error: " . substr($result, 6);
+    return FALSE;
+}
+	
 ## IV. Database
 
 ## IV.A. Users
@@ -2776,6 +2809,15 @@ function list_plays($uid,$time) {
 function log_play($uid, $start, $time) {
 
   global $dbh;
+
+  $SQL = "DELETE FROM plays ";
+  $SQL .= "WHERE ID=:uid ";
+  $SQL .= "AND stamp=:start ";
+
+  $statement = $dbh->prepare($SQL);
+  $statement->bindParam(":uid",$uid,PDO::PARAM_INT);
+  $statement->bindParam(":start",$start,PDO::PARAM_INT);
+  $return = $statement->execute();
   
   $SQL = "INSERT INTO plays (ID, stamp, duration) ";
   $SQL .= "VALUES (:uid, :start, :duration) ";
@@ -2789,6 +2831,116 @@ function log_play($uid, $start, $time) {
   return $return;
 }
 
+function query_oldest_log() {
+
+  global $dbh;
+  
+  $SQL = "SELECT MIN(stamp) from plays";
+  $statement = $dbh->prepare($SQL);
+  $statement->execute();
+
+  $oldestPlay = $statement->fetchColumn();
+
+  $SQL = "select min(purchasedate) from purchases";
+  $statement = $dbh->prepare($SQL);
+  $statement->execute();
+
+  $oldestPayDashed = $statement->fetchColumn();
+  
+  list($year,$month,$day) = explode("-",$oldestPayDashed);
+
+  $oldestPay = mktime(0,0,0,$month,$day,$year);
+
+  $oldest = min($oldestPlay,$oldestPay);
+
+  return $oldest;
+
+}
+
+function query_pay_info($month,$year) {
+
+  global $dbh;
+  
+  $thisMonth = "$year-$month-01";
+  $month++;
+  if ($month > 12) {
+    $month = 1;
+    $year++;
+  }
+  $nextMonth = "$year-$month-01";
+  
+  $SQL = "SELECT COUNT(*) AS basicCount,SUM(purchaseamt) AS basicAmt,SUM(purchasecost) AS basicCost FROM purchases ";
+  $SQL .= "WHERE purchasedate >= :thisMo ";
+  $SQL .= "AND purchasedate < :nextMo ";
+  $SQL .= "AND purchasetype='basic' ";
+
+  $statement = $dbh->prepare($SQL);
+  $statement->bindParam(":thisMo",$thisMonth,PDO::PARAM_STR);
+  $statement->bindParam(":nextMo",$nextMonth,PDO::PARAM_STR);  
+  $statement->execute();
+  
+  $payInfo1 = $statement->fetch(PDO::FETCH_ASSOC);
+
+  $SQL = "SELECT COUNT(*) AS premiumCount,SUM(purchaseamt) AS premiumAmt,SUM(purchasecost) AS premiumCost FROM purchases ";
+  $SQL .= "WHERE purchasedate >= :thisMo ";
+  $SQL .= "AND purchasedate < :nextMo ";
+  $SQL .= "AND purchasetype='premium' ";
+
+  $statement = $dbh->prepare($SQL);
+  $statement->bindParam(":thisMo",$thisMonth,PDO::PARAM_STR);
+  $statement->bindParam(":nextMo",$nextMonth,PDO::PARAM_STR);  
+  $statement->execute();
+  
+  $payInfo2 = $statement->fetch(PDO::FETCH_ASSOC);
+
+  $SQL = "SELECT COUNT(*) AS spsCount,SUM(purchaseamt) AS spsAmt,SUM(purchasecost) AS spsCost FROM purchases ";
+  $SQL .= "WHERE purchasedate >= :thisMo ";
+  $SQL .= "AND purchasedate < :nextMo ";
+  $SQL .= "AND purchasetype='sps' ";
+
+  $statement = $dbh->prepare($SQL);
+  $statement->bindParam(":thisMo",$thisMonth,PDO::PARAM_STR);
+  $statement->bindParam(":nextMo",$nextMonth,PDO::PARAM_STR);  
+  $statement->execute();
+  
+  $payInfo3 = $statement->fetch(PDO::FETCH_ASSOC);
+
+  $payInfo = array_merge($payInfo1,$payInfo2,$payInfo3);
+
+  foreach ($payInfo as $key => $value) {
+    $payInfo[$key] = round($value);
+  }
+  return $payInfo;
+
+}
+
+function query_play_info($month,$year) {
+
+  global $dbh;
+  
+  $thisMonthTS = strtotime("$month/01/$year");
+  
+  $month++;
+  if ($month > 12) {
+    $month = 1;
+    $year++;
+  }
+  $nextMonthTS = strtotime("$month/01/$year");
+  
+  $SQL = "select COUNT(*) as playAmt,COUNT(distinct ID) as userAmt,SUM(duration) as timeAmt from plays ";
+  $SQL .= "WHERE stamp >= :thisMo ";
+  $SQL .= "AND stamp < :nextMo ";
+
+  $statement = $dbh->prepare($SQL);
+  $statement->bindParam(":thisMo",$thisMonthTS,PDO::PARAM_INT);
+  $statement->bindParam(":nextMo",$nextMonthTS,PDO::PARAM_INT);  
+  $statement->execute();
+
+  $playInfo = $statement->fetch(PDO::FETCH_ASSOC);
+
+  return $playInfo;
+  
+}
 
 ## V. Administrivia
 
