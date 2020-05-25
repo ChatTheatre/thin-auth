@@ -265,3 +265,23 @@ Obviously, you will need to restart the servers aftewrard; this can be done by k
 #### 12B. Maintaining Your Certs
 
 [TODO: certbot renew]
+
+#### 12C. Rotating Your Logs
+
+You will want to rotate your `/var/log/userdb.log` and (if you're using it) `/var/log/tunnel`. This requires `logrotate`, which will typically be installed on most systems already. If so, you can simply add an `/etc/logrotate.d/skotos` file, as follows:
+```
+/var/log/userdb.log {
+		    weekly
+		    rotate 8
+		    size 1M
+}
+
+/var/log/tunnel/* {
+		  weekly
+		  rotate 3
+		  compress
+		  delaycompress
+		  size 1M
+}		  
+```
+This will rotate the UserDB and tunnel files on a weekly basis, retaining 8 logs for the UserDB and 3 for the tunnel.
