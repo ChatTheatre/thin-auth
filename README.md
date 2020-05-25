@@ -191,6 +191,12 @@ This will check the servers every minute, and restart any that isn't running.
 
 (Note that this means that if you ever want to make a change to your server services ... or if you ever download a new copy from GitHub, all you have to do is kill the `server-auth.php` and `server-control.php` processes, and they'll restart with the new code within a minute.)
 
+If you plan to give out monthly StoryPoints for premium accounts, as was done on classic Skotos games, you should also put something like the following in your cron:
+```
+1 4 1-3 * * /var/www/html/user/admin/grantsps.sh
+```
+This will attempt a StoryPoint disbursement on each of the first three days of the month. Note that the `grantsps` script is set to only actually give those points out once a month, so the extra runs just ensure that SPs are lost due to server downtime.
+
 ### 10. Tell Your Game to Connect to the New Server
 
 For a SkotOS game, you should first edit `/usr/System/data/userdb` under `/var/skotos/X000/skoot` in your SkotOS setup. It should be set to your local IP and port:
