@@ -2942,6 +2942,27 @@ function query_play_info($month,$year) {
   
 }
 
+function query_player_counts() {
+
+  global $dbh;
+  $players = array();
+  
+  $SQL = "select COUNT(*) from users WHERE next_stamp>UNIX_TIMESTAMP() and account_type='regular';";
+  $statement = $dbh->prepare($SQL);
+  $statement->execute();
+ 
+  $players['regular'] = $statement->fetchColumn();
+
+  $SQL = "select COUNT(*) from users WHERE next_stamp>UNIX_TIMESTAMP() and account_type='trial';";
+  $statement = $dbh->prepare($SQL);
+  $statement->execute();
+ 
+  $players['trial'] = $statement->fetchColumn();
+
+  return $players;
+}
+
+
 ## V. Administrivia
 
 function sendEmailMessage($name, $email, $subject, $message, &$complaint) {

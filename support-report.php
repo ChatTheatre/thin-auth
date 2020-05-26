@@ -3,6 +3,7 @@
 require_once("userdb.php");
 $config = read_config("general.json");
 $siteName = $config['siteName'];
+$fconfig = read_config("financial.json");
 
 # In userdb.php
 
@@ -102,11 +103,23 @@ $siteName = $config['siteName'];
     } ?>
 <? if ($report_pay) { ?>
 
+<? $total_funds = $report_pay[3]+$report_pay[7] + report_pay[11]; ?>
+
 <p><h2>Pay Report (<? echo $logDate . $incomplete; ?>)</h2>
 <p><b>Basic Accounts:</b> <? echo $report_pay[2]; ?> months purchased (<? echo $report_pay[1]; ?> events), $<? echo $report_pay[3]; ?>
 <br><b>Premium Accounts:</b> <? echo $report_pay[6]; ?> months purchased (<? echo $report_pay[5]; ?> events), $<? echo $report_pay[7]; ?>
 <br><b>Story Points:</b> <? echo $report_pay[10]; ?> SPs purchased (<? echo $report_pay[9]; ?> events), $<? echo $report_pay[11]; ?><br>
-<p><b>Total Funds (<? echo $logDate; ?>):</b> $<? echo $report_pay[3] + $report_pay[7] + $report_pay[11]; ?>
+<p><b>Total Funds (<? echo $logDate; ?>):</b> $<? echo $total_funds; ?>
+<? if ($fconfig['royalties']) {
+
+echo "<p><b>Royalties:</b><blockquote>";
+
+  foreach ($fconfig['royalties'] as $key => $value) {
+    echo "<i>$key ($value%):</i> $" . number_format($total_funds*($value/100),2) . "<br>";
+  }
+  
+} ?>
+</blockquote>
 <hr>
 <p><h2>Play Report (<? echo $logDate . $incomplete; ?>)</h2>
 <p><b>Plays:</b> <? echo $report_play[1]; ?> (<? echo $report_play[3]; ?> users)
@@ -118,11 +131,6 @@ $siteName = $config['siteName'];
 
 ?>
 <br><b>Total Time:</b> <? echo $hoursPlay; ?> hours (<? echo $avgPlay; ?> hours per user)
-<? } ?>
-<? if ($id && $isAdmin) { ?>
-<p align="right"><i>return to <a href="support.php">support</a></i></p>
-<? } else { ?>
-<p align="right"><i>return to <a href="overview.php">overview</a></i></p>
 <? } ?>
   </div>
   <div class="acctinfo doublewide" align='center'>
