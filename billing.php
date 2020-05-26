@@ -65,7 +65,7 @@ $siteName = $config['siteName'];
     } ?>
 <? if ($bill_log) {
 
-  $exploded_log = explode(PHP_EOL,$bill_log);
+  $exploded_log = explode(",",$bill_log);
 
 ?>
 
@@ -74,13 +74,13 @@ $siteName = $config['siteName'];
         <th>Date</th>
 	<th>Event</th>
       </tr>
-<? for ($i = 0 ; $i < sizeof($exploded_log) ; $i++) {
+<? for ($i = 0 ; $i < sizeof($exploded_log) ; $i+=2) {
 
-     $thisLine = preg_split('#\s+#',$exploded_log[$i],2);
+#     $thisLine = preg_split('#\s+#',$exploded_log[$i],2);
 ?>
       <tr>
-        <td><? echo $thisLine[0]; ?></td>
-        <td><? echo $thisLine[1]; ?></td>	
+        <td><? echo $exploded_log[$i]; ?></td>
+        <td><? echo $exploded_log[$i+1]; ?></td>	
       </tr>
 <? } ?>
     </table>

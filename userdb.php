@@ -2255,12 +2255,13 @@ function query_property($uid,$property) {
 		    break;
 
 		}
-		
-	        $billReturn .= $billing[$i]['purchasedate'] . "  " . $billDesc;
+	        if ($i != 0) {
+		  $billReturn .= ",";
+		}
+	        $billReturn .= $billing[$i]['purchasedate'] . "," . $billDesc;
 		if ($billing[$i]['purchasecost']) {
 		  $billReturn .= " ($" . number_format($billing[$i]['purchasecost'],2) . ")";
 		}
-		$billReturn .= "\n";
 	      }
 
 	      return $billReturn;
