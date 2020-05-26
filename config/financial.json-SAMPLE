@@ -13,5 +13,8 @@
     "spCostBasic": "34.95",
     "spMaxPremium": "250",
     "spCostPremium": "24.95"
+    "royalties": {
+	  "Dyvers Hands": "10"
+    }
 
 }    
