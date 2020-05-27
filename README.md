@@ -276,7 +276,11 @@ Obviously, you will need to restart the servers aftewrard; this can be done by k
 
 #### 12B. Maintaining Your Certs
 
-[TODO: certbot renew]
+You will need to renew your SSL/TLS certificates on a regular basis. Insert something like the following into your `crontab` to do so:
+```
+1 5 1-2	* * /usr/bin/certbot renew
+```
+This example will try and renew your certs on the 1st and 2nd of each month (with the extra day just in case your machine is down on th eother).
 
 #### 12C. Rotating Your Logs
 
