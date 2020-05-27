@@ -3,6 +3,7 @@
 require_once("userdb.php");
 $config = read_config("general.json");
 $siteName = $config['siteName'];
+$webURL = $config['webURL'];
 
 $paypalCF = read_config("financial.json");
 
@@ -122,6 +123,9 @@ $paypalCF = read_config("financial.json");
 	      <ul>
 	      <br>
               <li><a href="http://<? echo $config['gameURL']; ?>">Play Game</a>
+<? if ($webURL) { ?>
+              <li><a href="http://<? echo $config['webURL']; ?>">Visit Web Pages</a>
+<? } ?>	      
               <li><a href="logout.php">Logout Account</a>
 	      </ul>
 	    </td>
