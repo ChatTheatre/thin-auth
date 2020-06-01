@@ -3,10 +3,16 @@
 Following my initial work, I am leaving this server to the community. The following are my suggestions for improving it.
 
 * <strike>Slow down polling of servers</strike> (added 60 second timeout on `socket_select`)
-* Add optional link to main WWW pages
-* Add CE/support pages
+* <strike>Add optional link to main WWW pages</strike>
+* <strike>Add CE/support pages</strike>
 * Make location of files generic, rather than requiring `/var/www/html/user`
 * Move non-authed commands from server-auth to server-control
-* Add script or instructions to rotate `/var/log/userdb.log`
+* <strike>Add script or instructions to rotate `/var/log/userdb.log`</strike>
 * Add watch script for userdb-autctl just in case
-* Better center logo, especially on login page
+* <strike>Better center logo, especially on login page</strike>
+
+## Bugs
+
+The following are technically bugs, though they're not critical ones. Fixing them would improve the software.
+
+* The Paypal payment address is case sensitive, where Paypal's addresses aren't. Currently, entering the address in all lower case makes it work fine, but it would be better to check the address case insensitively in `storypoints-paypal-verify.php` and `subscribe-paypal-verify.php`
