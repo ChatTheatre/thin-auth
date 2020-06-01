@@ -635,8 +635,8 @@ function convertAccount(&$auth_sock, $uname, $code, $towhat, &$complaint) {
 	 urlencode(strtolower($uname))	. " " .
 	 $code				. " " .
 	 "convertaccount"		. " " .
-	 urlencode($towhat)		. " " .	 
-	 "1"				. "\n");
+	 "1"				. " " .
+	 urlencode($towhat)		. "\n");	 
 
    $result = chop(fgets($auth_sock, 2048));
    if (substr($result, 2, 2) == "OK") {
