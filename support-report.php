@@ -103,7 +103,7 @@ $fconfig = read_config("financial.json");
     } ?>
 <? if ($report_pay) { ?>
 
-<? $total_funds = $report_pay[3]+$report_pay[7] + report_pay[11]; ?>
+<? $total_funds = $report_pay[3] + $report_pay[7] + $report_pay[11]; ?>
 
 <p><h2>Pay Report (<? echo $logDate . $incomplete; ?>)</h2>
 <p><b>Basic Accounts:</b> <? echo $report_pay[2]; ?> months purchased (<? echo $report_pay[1]; ?> events), $<? echo $report_pay[3]; ?>
