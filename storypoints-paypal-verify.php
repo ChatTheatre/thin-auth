@@ -32,7 +32,7 @@ $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 $header .= "Host: ipnpb.paypal.com\r\n";
 $header .= "Connection: close\r\n";
 $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
-$fp = fsockopen ('tls://ipnpb.paypal.com', 443, $errno, $errstr, 30);
+$fp = fsockopen ('tlsv1.2://ipnpb.paypal.com', 443, $errno, $errstr, 30);
 error_log("PAYPAL PAYMENT: $req",0);
 
 # Step 0C: Assign posted variables to local variables
