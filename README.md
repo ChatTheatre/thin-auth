@@ -255,9 +255,9 @@ Then, go to MySQL and give that user 'access' for your gameID as set in your `ge
 ```
 # mysql
 > use userdb;
-> INSERT INTO access (ID, game) values (1, 'lcabn');
+> INSERT INTO access (ID, game) values (1, 'gameid');
 ```
-(This example would give UID #1 login-admin permissions for the gameID `lcabn`).
+(This example would give UID #1 login-admin permissions for the gameID `gameid`; that should match the `access` line in your `instance` file).
 
 Afterward, you can then use the `support.php` page for other administrative work.
 
