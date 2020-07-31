@@ -227,7 +227,7 @@ This can be found in `/usr/HTTP/sys/httpd.c` in your game instance (`/var/skotos
 Adjust it to something like the following:
 ```
    case LOCAL_USERDB:
-      return "https://http://login.lovecraft.skotos.net/login.php";
+      return "https://login.lovecraft.skotos.net/login.php";
 ```
 Afterward you will need to log in to the admin port and recompile this file:
 ```
