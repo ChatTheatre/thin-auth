@@ -61,7 +61,7 @@ You will need to install Apache, MariaDB, PHP, and related libraries
 ```
 # apt-get update
 # apt-get install apache2
-# apt-get install mysql-server
+# apt-get install mariadb-server
 # apt-get install libapache2-mod-php7.0 libapache2-mod-php
 # apt-get install php
 # apt-get install php-mysql
