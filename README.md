@@ -142,7 +142,7 @@ Technically, you can call this by a different name if you want, just adjust futu
 
 Fill the `userdb` with standard tables:
 ```
-# cat /var/www/html/user/database/userdb-schema.mysql | mysql -p
+# cat /var/www/html/user/database/userdb-schema.mysql | mysql -p userdb
 ```
 
 #### 6B.1 ALTERNATIVE: Copy a UserDB Table
