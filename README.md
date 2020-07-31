@@ -69,7 +69,7 @@ You will need to install Apache, MariaDB, PHP, and related libraries
 
 ### 4. Prepare PHP
 
-Make sure that PHP is setup correctly. In particular, enable the `short_open_tag` for the `apache` version of PHP. On Debian, this is currently stored in `/etc/php/7.0/apache/php.ini`:
+Make sure that PHP is setup correctly. In particular, enable the `short_open_tag` for the `apache` version of PHP. On Debian, this is currently stored in `/etc/php/7.3/apache/php.ini` (but will change as PHP continues to upgrade: just look in `/etc/php` to get the right directory):
 ```
 short_open_tag = On
 ```
