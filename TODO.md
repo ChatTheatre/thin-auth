@@ -15,4 +15,5 @@ Following my initial work, I am leaving this server to the community. The follow
 
 The following are technically bugs, though they're not critical ones. Fixing them would improve the software.
 
+* THe "list_flags()" function only works right when you're importing a database. There needs to be one example of each flag in the flags for it to work! (Maybe the samples should be set with ID 0? An alternative is just to list them:   return array("no-email","premium","grand","terms-of-service","deleted","banne\
 * The Paypal payment address is case sensitive, where Paypal's addresses aren't. Currently, entering the address in all lower case makes it work fine, but it would be better to check the address case insensitively in `storypoints-paypal-verify.php` and `subscribe-paypal-verify.php`
