@@ -2596,15 +2596,18 @@ function is_tossed($uid) {
 
 function list_flags() {
 
-  global $dbh;
-  
-  $SQL = "SELECT DISTINCT flag FROM flags ";
-  $SQL .= "GROUP BY flag ORDER BY flag ";
-  
-  $statement = $dbh->prepare($SQL);
-  $statement->execute();
 
-  return $statement->fetchAll(PDO::FETCH_COLUMN);
+  return array("no-email","premium","grand","terms-of-service","deleted","banned");
+
+#  global $dbh;
+  
+#  $SQL = "SELECT DISTINCT flag FROM flags ";
+#  $SQL .= "GROUP BY flag ORDER BY flag ";
+  
+#  $statement = $dbh->prepare($SQL);
+#  $statement->execute();
+
+#  return $statement->fetchAll(PDO::FETCH_COLUMN);
   
 }
 
