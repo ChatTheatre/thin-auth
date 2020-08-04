@@ -405,7 +405,7 @@ if ($type == "premium" && $daysLeft != "expired") { ?>
 # SP Box
 
 
-if ($type != "trial" && $daysLeft != "expired") {
+if ($type != "trial" && $daysLeft != "expired" && ( $paypalCF['spCostBasic'] || $paypalCF['spCostPremium'] ) ) {
 
 
   $spUsed = storypoints_purchased($ctl_sock,$user,0,$complaint);
