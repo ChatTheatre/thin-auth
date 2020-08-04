@@ -1609,7 +1609,7 @@ function update_user_value($uid,$property,$value) {
     $SQL .= "WHERE ID=:uid ";
 
     $statement = $dbh->prepare($SQL);
-    $statement->bindParam(":value",$value,PDO::PARAM_INT);    
+    $statement->bindParam(":value",$value,PDO::PARAM_STR);    
     $statement->bindParam(":uid",$uid,PDO::PARAM_INT);
     return $statement->execute();
 
