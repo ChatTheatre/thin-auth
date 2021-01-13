@@ -1,7 +1,6 @@
 <?php
 
-(PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) && die('ERROR: This i
-s a command-line program.');
+(PHP_SAPI !== 'cli' || isset($_SERVER['HTTP_USER_AGENT'])) && die('ERROR: This is a command-line program.');
 
 if (isset($argc) && $argc > 1) {
   $password=$argv[1];
@@ -11,8 +10,7 @@ if (isset($argc) && $argc > 1) {
   
 } else {
 
-   echo "ERROR: You must send as a command line argument of the password to conv
-ert.\n";
+   echo "ERROR: You must send as a command line argument of the password to convert.\n";
 
 }
 
