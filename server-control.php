@@ -360,7 +360,20 @@ $configInfo = read_config("server.json");
 
 		    }
 		    break;
-						      
+
+## ListPing
+
+		    case "listping":
+
+                    $pingList = list_pings();
+		    if ($pingList) {
+  		      $pingCatted = implode(" ",$pingList);
+   		      socket_ok($read_sock,$seq,$pingCatted);
+		    } else {
+		      socket_error($read_sock,$seq,"NO PINGS");
+		    }
+		    
+		    break;
 ## Logbill
 
 		    case "logbill":

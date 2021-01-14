@@ -801,6 +801,20 @@ function getProperty(&$ctl_sock, $uname, &$complaint, $prop) {
    return FALSE;
 }
 
+function listPing(&$ctl_sock) {
+   if (!connect_ctl_sock($ctl_sock, $complaint)) {
+      return FALSE;
+   }
+
+   fputs($ctl_sock, "listping 1 1" . "\n");
+   $result = fgets($ctl_sock, 16384);
+   if (substr($result, 2, 2) == "OK") {
+      return chop(substr($result, 5));
+   }
+   $complaint = "UserDB error: " . urldecode(substr($result, 6));
+   return FALSE;
+}
+
 function setPassword(&$ctl_sock, $uname, $old, $new, &$complaint,$guaranteed=0) {
    if (!connect_ctl_sock($ctl_sock, $complaint)) {
       return FALSE;
@@ -953,7 +967,6 @@ function deletePing(&$ctl_sock, $uname, $update, &$complaint) {
    $complaint = "UserDB error: " . urldecode(substr($result, 6));
    return FALSE;
 }
-
 
 ## III.D Storypoints
 
@@ -1909,6 +1922,27 @@ function has_verified_email($uid) {
   } else {
     return TRUE;
   }
+}
+
+function list_pings() {
+
+  global $dbh;
+  $SQL = "select email_ping.ID,users.name,email_ping.stamp,users.email AS email_old,email_ping.email AS email_new from email_ping, users WHERE email_ping.ID=users.ID ORDER by email_ping.stamp";
+
+  $statement = $dbh->prepare($SQL);
+  $return = $statement->execute();
+
+  if (!$return) {
+    return FALSE;
+  }
+
+  $pings = array();
+  while ($thisResult = $statement->fetch(PDO::FETCH_ASSOC)) {
+    $pings[] = $thisResult['stamp'] . "::" . $thisResult['ID'] . "::" . trim($thisResult['name']) . "::" . trim($thisResult['email_old']) . "::" . trim($thisResult['email_new']);
+  }
+
+  return $pings;
+  
 }
 
 function ping_user($uid,$email) {
