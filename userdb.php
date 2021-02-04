@@ -157,7 +157,10 @@ function checkNextStep(&$auth_sock, $uname, $code, $return, &$complaint) {
 
 
 function checkTimeOut(&$auth_sock, $uname, $code, &$complaint) {
+   $date = date('r');
    if (!connect_auth_sock($auth_sock, $complaint)) {
+      $date = date('r');
+      error_log("[$date]: checkTimeOut: Cannot connect to auth_sock");
       return TRUE;
    }
    fputs($auth_sock, ":" .
@@ -172,8 +175,10 @@ function checkTimeOut(&$auth_sock, $uname, $code, &$complaint) {
    }
    $problem = urldecode(substr($result, 6));
    if ($problem == "BAD KEYCODE" || $problem == "ACCOUNT BLOCKED") {
-     return TRUE;      
+      error_log("[$date]: checkTimeOut: Bad keycode or account blocked");
+     return TRUE;
    } else if ($problem == "TOS") {
+      error_log("[$date]: checkTimeOut: redirect to TOS");
      $thisPage = basename($_SERVER['PHP_SELF'],'.php');
      if ($thisPage != "agree-tos") {
        Header("Location: agree-tos.php");
@@ -182,6 +187,7 @@ function checkTimeOut(&$auth_sock, $uname, $code, &$complaint) {
        return FALSE;
      }
    } else if ($problem == "USER HAS NO EMAIL") {
+      error_log("[$date]: checkTimeOut: User has no email");
      $thisPage = basename($_SERVER['PHP_SELF'],'.php');
      if ($thisPage != "change-email" && $thisPage !="verify-email") {
        Header("Location: change-email.php");
@@ -191,6 +197,7 @@ function checkTimeOut(&$auth_sock, $uname, $code, &$complaint) {
      }     
    }
    $complaint = "UserDB error: " . $problem;
+   error_log("[$date]: checkTimeOut: UserDB error: $problem");
    return TRUE;
 }
 
