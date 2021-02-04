@@ -11,7 +11,7 @@ function connect_auth_sock(&$sock, &$complaint)
  
 	$sock = fsockopen($configInfo['serverIP'], $configInfo['serverAuthPort'], $errno, $errstr, 30);
 	if (!$sock) {
-	    $complaint = "Auth Failure: There was a technical problem.  ".
+	    $complaint = "Auth Failure: There was a technical problem ($errno / $errstr).  ".
 		         "Please try again later.";
 	    return FALSE;
 	}
@@ -26,7 +26,7 @@ function connect_ctl_sock(&$sock, &$complaint)
  
 	$sock = fsockopen($configInfo['serverIP'], $configInfo['serverCtlPort'], $errno, $errstr, 30);    
 	if (!$sock) {
-	    $complaint = "Control Failure: There was a technical problem.  ".
+	    $complaint = "Control Failure: There was a technical problem ($errno / $errstr). ".
 		         "Please try again later.";
 	    return FALSE;
 	}
