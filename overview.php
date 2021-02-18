@@ -3,7 +3,15 @@
 require_once("userdb.php");
 $config = read_config("general.json");
 $siteName = $config['siteName'];
-$webURL = $config['webURL'];
+
+if ($config['webURL']) {
+    $webURL = strpos($config['webURL'], 'http') !== False ? $config['webURL'] : ('http://' . $config['webURL']);
+}
+if ($config['woeURL']) {
+    $woeURL = strpos($config['woeURL'], 'http') !== False ? $config['woeURL'] : ('http://' . $config['woeURL']);
+}
+
+$gameURL = strpos($config['gameURL'], 'http') !== False ? $config['gameURL'] : ('http://' . $config['gameURL']);
 
 $paypalCF = read_config("financial.json");
 
@@ -122,9 +130,9 @@ $paypalCF = read_config("financial.json");
 	    <td width='50%'>
 	      <ul>
 	      <br>
-              <li><a href="http://<? echo $config['gameURL']; ?>">Play Game</a>
+              <li><a href="<? echo $gameURL; ?>">Play Game</a>
 <? if ($webURL) { ?>
-              <li><a href="http://<? echo $config['webURL']; ?>">Visit Web Pages</a>
+              <li><a href="<? echo $webURL; ?>">Visit Web Pages</a>
 <? } ?>	      
               <li><a href="logout.php">Logout Account</a>
 	      </ul>
@@ -154,7 +162,7 @@ $paypalCF = read_config("financial.json");
 	    <td width='50%'>
 	      <ul>
 	        <br>
-                <li><a href="http://<? echo $config['woeURL']; ?>">Go to Woe</a>
+                <li><a href="<? echo $woeURL; ?>">Go to Woe</a>
               </ul>
 	    </td>
 	    <? } ?>
