@@ -388,6 +388,10 @@ function pingUser(&$auth_sock, $uname, $email, $code, &$complaint) {
       Header("Location: login.php");
       return FALSE;
    }
+   if ($problem == "email failed" || $problem == "ping failed") {
+      $complaint = "There was an error sending your email verification message. Your account was created correctly. Please contact support to manually verify your email or wait and try to change your email again yourself.";
+      return FALSE;
+   }
    $complaint = "UserDB error: " . $problem;
    return FALSE;
 }
